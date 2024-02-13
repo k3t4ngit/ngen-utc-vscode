@@ -1,6 +1,7 @@
 {
   "name": "ngen-utc-vscode",
-  "displayName": "ngen-utc-vscode",
+  "displayName": "NG-Spec-Gen",
+  "publisher": "KetanTiwari",
   "description": "Generate Angular Specs",
   "version": "0.0.1",
   "engines": {

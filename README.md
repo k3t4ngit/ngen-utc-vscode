@@ -1,65 +1,33 @@
-# ngen-utc-vscode README
+# Angular UTC Generator for Visual Studio Code
+Welcome to the Angular UTC Generator extension for Visual Studio Code! This extension is designed to streamline the process of adding and updating UTC (Unit test Cases) in your Angular project, specifically for components, directives, pipes, and services files. Additionally, it offers the functionality to generate separate spec files for existing specs of components, directives, pipes, and services, ensuring that original spec files remain untouched.
 
-This is the README for your extension "ngen-utc-vscode". After writing up a brief description, we recommend including the following sections.
+Uses [ngentest](https://github.com/allenhwkim/ngentest) package internally.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **UTC Annotation**: Easily add UTC annotations to your Angular components, directives, pipes, and services files with just a few clicks.
+- **Spec File Generation**: Generate new spec files for existing components, directives, pipes, and services. Original spec files are preserved, allowing developers to manually compare and incorporate changes as needed.
+- **Non-Destructive Operation**: The extension operates in a non-destructive manner, ensuring that existing code and spec files remain intact.
+- **Visual Studio Code Integration**: Seamlessly integrates with Visual Studio Code, providing a user-friendly experience within your development environment.
 
-For example if there is an image subfolder under your extension project workspace:
+## Getting Started
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Install the Angular UTC Generator extension from the Visual Studio Code Marketplace.
+2. Open your Angular project in Visual Studio Code.
+3. Navigate to the file you want to update (component, directive, pipe, or service).
+4. Use the provided commands in the context menu or command palette to generate spec files.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Usage
 
-## Requirements
+Open any Typescript file and press Ctrl + Shift + P and select the command "Generate UTC for active file"
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Contributing
 
-## Extension Settings
+If you encounter any issues or have suggestions for improvements, feel free to [open an issue](https://github.com/k3t4ngit/ngen-utc-vscode/issues) on the GitHub repository. Contributions are also welcome through pull requests.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## License
 
-For example:
+This extension is licensed under the [MIT License](https://www.mit.edu/~amini/LICENSE.md).
 
-This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Happy coding with Angular Spec Generator! 
