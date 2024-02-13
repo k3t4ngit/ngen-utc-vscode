@@ -2,13 +2,20 @@
   "name": "ngen-utc-vscode",
   "displayName": "NG-Spec-Gen",
   "publisher": "KetanTiwari",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/k3t4ngit/ngen-utc-vscode"
+  },
+  "icon": "./icon.png",
   "description": "Generate Angular Specs",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.86.0"
   },
   "categories": [
-    "Other"
+    "Testing",
+    "Snippets",
+    "Programming Languages"
   ],
   "activationEvents": [],
   "main": "./extension.js",
