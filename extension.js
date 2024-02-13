@@ -1,6 +1,11 @@
+import Util from 'ngentest/lib/util';
+
 const vscode = require('vscode');
 const ngentest = require('ngentest');
 const fs = require('fs');
+const ngentestConf = require('./ngentest.config');
+
+
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -56,7 +61,8 @@ function activate(context) {
 }
 
 function createNewSpec(specFileFullPath, tsCode) {
-	const specFileContent = ngentest(tsCode, { 'test-framework': 'jasmine' });
+	Util.FRAMEWORK = ngentestConf.framework;
+	const specFileContent = ngentest(tsCode, ngentestConf);
 	fs.writeFile(specFileFullPath, specFileContent, (err) => {
 		if (err) { throw err; }
 		console.log('Spec file generated successfully');
