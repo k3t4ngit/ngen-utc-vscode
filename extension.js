@@ -1,17 +1,15 @@
-import Util from 'ngentest/lib/util';
-
 const vscode = require('vscode');
 const ngentest = require('ngentest');
 const fs = require('fs');
 const ngentestConf = require('./ngentest.config');
-
+const Util = require('ngentest/lib/util.js');
+const path = require('path');
 
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-
 	console.log('Congratulations, your extension "ngen-utc-vscode" is now active!');
 	let disposable = vscode.commands.registerCommand('ngen-utc-vscode.ngUTC', function () {
 		const editor = vscode.window.activeTextEditor;
@@ -21,7 +19,7 @@ function activate(context) {
 			const fileNameArr = fPathArr.pop()?.split(".") || [];
 			const specFilePath = fPathArr.join("\\");
 			if (fileNameArr.length && fileNameArr[fileNameArr.length - 1] === 'ts') {
-				if (fileNameArr.includes('spec') || fileNameArr.includes('generated-spec')) {
+				if (fileNameArr.includes('spec')) {
 					vscode.window.showErrorMessage('This seems to be a spec file!');
 					return;
 				}
@@ -31,13 +29,10 @@ function activate(context) {
 				const specFileFullPath = specFilePath + '\\' + specFileName;
 				if (fs.existsSync(specFileFullPath)) {
 					vscode.window
-						.showInformationMessage("Spec File already exists please choose what do you want to do?", "Overwrite", "Create New and Compare")
+						.showInformationMessage("Spec File already exists please choose what do you want to do?", "Overwrite", "Create Temp and Compare")
 						.then(answer => {
-							if (answer === "Create New and Compare") {
-								fileNameArr[fileNameArr.length - 2] = "generated.spec";
-								const generatedSpecFileName = fileNameArr.join('.');
-								const generatedSpecFileFullPath = specFilePath + '\\' + generatedSpecFileName;
-								createNewSpec(generatedSpecFileFullPath, document.getText());
+							if (answer === "Create Temp and Compare") {
+								createTempSpec(document.getText());
 							} else if (answer === "Overwrite") {
 								createNewSpec(specFileFullPath, document.getText());
 								return;
@@ -60,9 +55,24 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 }
 
+function createTempSpec(tsCode) {
+	const specFileContent = genSpec(tsCode);
+	const newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'temp.spec.ts'));
+	vscode.workspace.openTextDocument(newFile).then(document => {
+		const edit = new vscode.WorkspaceEdit();
+		edit.insert(newFile, new vscode.Position(0, 0), specFileContent);
+		return vscode.workspace.applyEdit(edit).then(success => {
+			if (success) {
+				vscode.window.showTextDocument(document);
+			} else {
+				vscode.window.showInformationMessage('Error!');
+			}
+		});
+	});
+}
+
 function createNewSpec(specFileFullPath, tsCode) {
-	Util.FRAMEWORK = ngentestConf.framework;
-	const specFileContent = ngentest(tsCode, ngentestConf);
+	const specFileContent = genSpec(tsCode);
 	fs.writeFile(specFileFullPath, specFileContent, (err) => {
 		if (err) { throw err; }
 		console.log('Spec file generated successfully');
@@ -73,11 +83,19 @@ function createNewSpec(specFileFullPath, tsCode) {
 					vscode.commands.executeCommand('workbench.action.files.save');
 					vscode.window.showInformationMessage('Specs have been created!');
 				});
-
 			});
-
 		});
 	});
+}
+
+function genSpec(tsCode) {
+	try {
+		Util.FRAMEWORK = ngentestConf.framework;
+		return ngentest(tsCode, ngentestConf);
+	} catch (e) {
+		vscode.window.showErrorMessage('Cannot generate Specs! Please check ts file has no errors.');
+		throw new Error("Cannot create Specs!!");
+	}
 }
 
 // This method is called when your extension is deactivated
