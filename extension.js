@@ -58,6 +58,7 @@ function activate(context) {
 function createTempSpec(tsCode) {
 	const specFileContent = genSpec(tsCode);
 	const newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'temp.spec.ts'));
+	closeFileIfOpen(newFile);
 	vscode.workspace.openTextDocument(newFile).then(document => {
 		const edit = new vscode.WorkspaceEdit();
 		edit.insert(newFile, new vscode.Position(0, 0), specFileContent);
@@ -95,6 +96,14 @@ function genSpec(tsCode) {
 	} catch (e) {
 		vscode.window.showErrorMessage('Cannot generate Specs! Please check ts file has no errors.');
 		throw new Error("Cannot create Specs!!");
+	}
+}
+
+function closeFileIfOpen(file) {
+	const tabs = vscode.window.tabGroups.all.map(tg => tg.tabs).flat();
+	const index = tabs.findIndex(tab => tab.input instanceof vscode.TabInputText && tab.input.uri.path === file.path);
+	if (index !== -1) {
+		vscode.window.tabGroups.close(tabs[index]);
 	}
 }
 
